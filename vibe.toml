@@ -1,0 +1,71 @@
+[package]
+name = "vim"
+group = "org.vibevm.apps"
+kind = "app"
+version = "1.0.0"
+epoch = 1
+format = "normal"
+authors = ["Oleg Chirukhin"]
+license = "UPL-1.0"
+description = "Install and launch the upstream Vim editor on supported platforms"
+keywords = ["vim", "editor", "application"]
+
+[compatibility]
+min_vibe_version = "1.0.8"
+requires_kinds = []
+
+[application]
+id = "vim"
+commands = []
+
+[[installer_options]]
+id = "ubuntu-apt"
+name = "Apt Installer"
+platform = "ubuntu"
+platform_name = "Ubuntu"
+arch = "x86_64"
+arch_name = "Intel/AMD 64-bit"
+
+[installer_options.method]
+kind = "shell"
+app_root = "/usr"
+install = 'if [ "$(id -u)" -eq 0 ]; then apt-get install vim; else sudo apt-get install vim; fi'
+update = 'if [ "$(id -u)" -eq 0 ]; then apt-get install --only-upgrade vim; else sudo apt-get install --only-upgrade vim; fi'
+uninstall = 'if [ "$(id -u)" -eq 0 ]; then apt-get remove vim; else sudo apt-get remove vim; fi'
+
+[[installer_options.launchers]]
+id = "vim"
+name = "Vim"
+description = "Terminal Vim installed by Ubuntu apt"
+executable = "bin/vim"
+terminal = true
+default = true
+
+[[installer_options]]
+id = "windows-zip"
+name = "Vim Windows ZIP"
+platform = "windows"
+platform_name = "Windows"
+arch = "x86_64"
+arch_name = "Intel/AMD 64-bit"
+
+[installer_options.method]
+kind = "zip"
+source = "https://github.com/vim/vim-win32-installer/releases/download/v9.2.1167/gvim_9.2.1167_x64.zip"
+sha256 = "259e099ad6dc688f3234c449cdcc658ad6f01778ac0c9cce277ecd970bcb1331"
+payload_root = "vim"
+
+[[installer_options.launchers]]
+id = "gvim"
+name = "gVim"
+description = "Graphical Vim for Windows"
+executable = "vim92/gvim.exe"
+icon = "vim92/vim.ico"
+default = true
+
+[[installer_options.launchers]]
+id = "vim"
+name = "Vim Console"
+description = "Terminal Vim for Windows"
+executable = "vim92/vim.exe"
+terminal = true
