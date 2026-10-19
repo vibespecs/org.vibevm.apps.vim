@@ -20,6 +20,13 @@ The platform, architecture, installer and launcher names are authored in
 `vibe.toml`. Other platforms and architectures are not declared, so Vibe does
 not display or infer them.
 
+`[package].kind = "app"` identifies the package. Each option's
+`[installer_options.installation].type` selects how that app is installed;
+`shell` and `zip` are installation types, not package kinds. A shell option
+always declares `install`, `uninstall`, `force_install`, and `force_uninstall`
+commands. Vim's forced Apt install requests `--reinstall`; forced removal
+purges the package's system configuration.
+
 ```text
 vibe app installers org.vibevm.apps/vim --json
 vibe install -g org.vibevm.apps/vim --platform ubuntu --arch x86_64 --installer ubuntu-apt
