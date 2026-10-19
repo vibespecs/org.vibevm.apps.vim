@@ -43,6 +43,10 @@ executable = "bin/vim"
 terminal = true
 default = true
 
+[[installer_options.public_commands]]
+name = "vim"
+launcher = "vim"
+
 [[installer_options]]
 id = "windows-zip"
 name = "Vim Windows ZIP"
@@ -71,3 +75,11 @@ name = "Vim Console"
 description = "Terminal Vim for Windows"
 executable = "vim92/vim.exe"
 terminal = true
+
+[[installer_options.public_commands]]
+name = "vim"
+launcher = "vim"
+
+[[installer_options.public_commands]]
+name = "gvim"
+launcher = "gvim"

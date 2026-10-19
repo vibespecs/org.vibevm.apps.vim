@@ -20,6 +20,12 @@ The platform, architecture, installer and launcher names are authored in
 `vibe.toml`. Other platforms and architectures are not declared, so Vibe does
 not display or infer them.
 
+The public `vim` command belongs to the `vim` alternatives slot. The Windows
+option also exposes `gvim`. These names map to this package's launchers; other
+packages and versions may provide different names in the same slot. Selecting
+the global alternative changes the slot's current pointer. A shell-local
+selection changes only that shell's `PATH`.
+
 `[package].kind = "app"` identifies the package. Each option's
 `[installer_options.installation].type` selects how that app is installed;
 `shell` and `zip` are installation types, not package kinds. A shell option
