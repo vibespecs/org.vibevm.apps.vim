@@ -9,7 +9,12 @@ The package author declares two installation choices:
   system shell, using `sudo` when Vibe is not running as root. The installer
   prints Apt's output and may prompt for a password. The installed files remain
   owned by the operating system; Vibe records `/usr` as the application root
-  and invokes `apt-get remove vim` only on an explicit uninstall.
+  and launches `/usr/bin/vim.basic` directly rather than the `/usr/bin/vim`
+  alternatives symlink, so the declared executable is a regular binary. It
+  invokes `apt-get remove vim` only on an explicit uninstall. This launcher
+  path targets the Ubuntu 26.04 x86_64 Vim package layout; other Ubuntu releases
+  or package variants must provide `/usr/bin/vim.basic` at that exact path to
+  use this option.
 - **Windows, x86_64 — Vim Windows ZIP:** downloads the pinned upstream
   [Vim Windows release](https://github.com/vim/vim-win32-installer/releases/tag/v9.2.1167),
   verifies its SHA-256 digest, and publishes its `vim/` tree under Vibe's
