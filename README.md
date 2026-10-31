@@ -3,7 +3,10 @@
 This package connects Vibe's application installer and launchers to upstream
 Vim. It requires Vibe 1.0.8 or newer and contains no Vim binaries.
 
-The package author declares two installation choices:
+The package author declares six installation choices, each written as the
+ordered list of steps vibe runs (`vibe app describe org.vibevm.apps/vim --json`
+shows them; `vibe app plan … --installer ID` shows what would run on this host
+without installing):
 
 - **Ubuntu, x86_64 — Apt Installer:** runs `apt-get install vim` through the
   system shell, using `sudo` when Vibe is not running as root. The installer
@@ -20,6 +23,21 @@ The package author declares two installation choices:
   verifies its SHA-256 digest, and publishes its `vim/` tree under Vibe's
   application host. The package offers `gVim` and terminal `Vim Console`
   launchers. The archive is fetched during installation; it is not stored here.
+- **Windows, x86_64 — Build from upstream sources (MinGW-w64):** downloads the
+  pinned source tarball and builds console Vim with `mingw32-make -f
+  Make_ming.mak` (`recipes/build-windows.cmd`); the step requires the
+  `org.vibevm.apps/mingw-w64` package as a build-only dependency: vibe installs
+  it hidden when absent and puts its tools on the step's PATH, so nothing but
+  Vim lands on the user's PATH.
+  The payload holds `vim92\vim.exe` and the runtime tree, like the ZIP option.
+- **Linux x86_64, macOS Apple silicon and macOS Intel — Build from upstream sources:** downloads the pinned
+  [Vim 9.2.1167 source tarball](https://github.com/vim/vim/archive/refs/tags/v9.2.1167.tar.gz),
+  verifies its SHA-256 digest, caches it under Vibe's settings root so a later
+  `--offline` install needs no network, and runs `recipes/build-posix.sh`
+  (`./configure --prefix="$VIBE_OUT"`, `make`, `make install`; a C compiler,
+  `make` and the ncurses development headers must be present; on macOS the
+  Xcode command-line tools provide all three). The resulting
+  tree is installed as a Vibe-owned, portable payload with a `vim` launcher.
 
 The platform, architecture, installer and launcher names are authored in
 `vibe.toml`. Other platforms and architectures are not declared, so Vibe does
@@ -45,7 +63,9 @@ vibe app launchers org.vibevm.apps/vim --json
 vibe app run org.vibevm.apps/vim vim
 ```
 
-On Windows, omit the explicit selection to use host detection, or select
+On Linux, `--installer linux-source` builds Vim from the pinned sources; the
+first install downloads the tarball, every later one may add `--offline`. On
+Windows, omit the explicit selection to use host detection, or select
 `--platform windows --arch x86_64 --installer windows-zip`. Launch `gvim` with
 `vibe app start org.vibevm.apps/vim`.
 

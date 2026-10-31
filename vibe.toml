@@ -2,7 +2,7 @@
 name = "vim"
 group = "org.vibevm.apps"
 kind = "app"
-version = "1.0.1"
+version = "1.1.0"
 epoch = 1
 format = "normal"
 authors = ["Oleg Chirukhin"]
@@ -16,7 +16,6 @@ requires_kinds = []
 
 [application]
 id = "vim"
-commands = []
 
 [[installer_options]]
 id = "ubuntu-apt"
@@ -25,15 +24,18 @@ platform = "ubuntu"
 platform_name = "Ubuntu"
 arch = "x86_64"
 arch_name = "Intel/AMD 64-bit"
+result = { external = "/usr" }
 
-[installer_options.installation]
-type = "shell"
-app_root = "/usr"
-install = 'if [ "$(id -u)" -eq 0 ]; then apt-get install vim; else sudo apt-get install vim; fi'
+[[installer_options.steps]]
+id = "apt"
+title = "Install the distribution package with apt"
+kind = "shell"
+command = 'if [ "$(id -u)" -eq 0 ]; then apt-get install vim; else sudo apt-get install vim; fi'
 force_install = 'if [ "$(id -u)" -eq 0 ]; then apt-get install --reinstall vim; else sudo apt-get install --reinstall vim; fi'
 update = 'if [ "$(id -u)" -eq 0 ]; then apt-get install --only-upgrade vim; else sudo apt-get install --only-upgrade vim; fi'
 uninstall = 'if [ "$(id -u)" -eq 0 ]; then apt-get remove vim; else sudo apt-get remove vim; fi'
 force_uninstall = 'if [ "$(id -u)" -eq 0 ]; then apt-get purge vim; else sudo apt-get purge vim; fi'
+needs = ["command:apt-get"]
 
 [[installer_options.launchers]]
 id = "vim"
@@ -55,11 +57,15 @@ platform_name = "Windows"
 arch = "x86_64"
 arch_name = "Intel/AMD 64-bit"
 
-[installer_options.installation]
-type = "zip"
+[[installer_options.steps]]
+id = "archive"
+title = "Download and unpack the upstream Windows build"
+kind = "archive"
+format = "zip"
 source = "https://github.com/vim/vim-win32-installer/releases/download/v9.2.1167/gvim_9.2.1167_x64.zip"
 sha256 = "259e099ad6dc688f3234c449cdcc658ad6f01778ac0c9cce277ecd970bcb1331"
 payload_root = "vim"
+needs = ["network"]
 
 [[installer_options.launchers]]
 id = "gvim"
@@ -83,3 +89,160 @@ launcher = "vim"
 [[installer_options.public_commands]]
 name = "gvim"
 launcher = "gvim"
+
+[[installer_options]]
+id = "windows-source"
+name = "Build from upstream sources (MinGW-w64)"
+platform = "windows"
+platform_name = "Windows"
+arch = "x86_64"
+arch_name = "Intel/AMD 64-bit"
+
+[[installer_options.steps]]
+id = "sources"
+title = "Fetch the pinned Vim 9.2.1167 sources"
+kind = "sources"
+needs = ["network"]
+
+[[installer_options.steps.sources]]
+name = "vim"
+url = "https://github.com/vim/vim/archive/refs/tags/v9.2.1167.tar.gz"
+sha256 = "bbcb6489aa995d128a8bf2a275fb5bc3f805ed36f52cb4d8347af425133cb3c4"
+
+[[installer_options.steps]]
+id = "build"
+title = "Build console Vim with MinGW-w64 and assemble the payload"
+kind = "recipe"
+interpreter = "windows_cmd"
+script = "recipes/build-windows.cmd"
+requires = ["org.vibevm.apps/mingw-w64@^15.2"]
+needs = ["command:gcc", "command:mingw32-make"]
+
+[[installer_options.launchers]]
+id = "vim"
+name = "Vim Console"
+description = "Terminal Vim built from the pinned upstream sources"
+executable = "vim92/vim.exe"
+terminal = true
+default = true
+
+[[installer_options.public_commands]]
+name = "vim"
+launcher = "vim"
+
+[[installer_options]]
+id = "linux-source"
+name = "Build from upstream sources"
+platform = "linux"
+platform_name = "Linux"
+arch = "x86_64"
+arch_name = "Intel/AMD 64-bit"
+
+[[installer_options.steps]]
+id = "sources"
+title = "Fetch the pinned Vim 9.2.1167 sources"
+kind = "sources"
+needs = ["network"]
+
+[[installer_options.steps.sources]]
+name = "vim"
+url = "https://github.com/vim/vim/archive/refs/tags/v9.2.1167.tar.gz"
+sha256 = "bbcb6489aa995d128a8bf2a275fb5bc3f805ed36f52cb4d8347af425133cb3c4"
+
+[[installer_options.steps]]
+id = "build"
+title = "Configure, build and install into the payload"
+kind = "recipe"
+interpreter = "posix_sh"
+script = "recipes/build-posix.sh"
+needs = ["command:cc", "command:make"]
+
+[[installer_options.launchers]]
+id = "vim"
+name = "Vim"
+description = "Terminal Vim built from the pinned upstream sources"
+executable = "bin/vim"
+terminal = true
+default = true
+
+[[installer_options.public_commands]]
+name = "vim"
+launcher = "vim"
+
+[[installer_options]]
+id = "macos-source-arm64"
+name = "Build from upstream sources"
+platform = "macos"
+platform_name = "macOS"
+arch = "aarch64"
+arch_name = "Apple silicon"
+
+[[installer_options.steps]]
+id = "sources"
+title = "Fetch the pinned Vim 9.2.1167 sources"
+kind = "sources"
+needs = ["network"]
+
+[[installer_options.steps.sources]]
+name = "vim"
+url = "https://github.com/vim/vim/archive/refs/tags/v9.2.1167.tar.gz"
+sha256 = "bbcb6489aa995d128a8bf2a275fb5bc3f805ed36f52cb4d8347af425133cb3c4"
+
+[[installer_options.steps]]
+id = "build"
+title = "Configure, build and install into the payload"
+kind = "recipe"
+interpreter = "posix_sh"
+script = "recipes/build-posix.sh"
+needs = ["command:cc", "command:make"]
+
+[[installer_options.launchers]]
+id = "vim"
+name = "Vim"
+description = "Terminal Vim built from the pinned upstream sources"
+executable = "bin/vim"
+terminal = true
+default = true
+
+[[installer_options.public_commands]]
+name = "vim"
+launcher = "vim"
+
+[[installer_options]]
+id = "macos-source-intel"
+name = "Build from upstream sources"
+platform = "macos"
+platform_name = "macOS"
+arch = "x86_64"
+arch_name = "Intel 64-bit"
+
+[[installer_options.steps]]
+id = "sources"
+title = "Fetch the pinned Vim 9.2.1167 sources"
+kind = "sources"
+needs = ["network"]
+
+[[installer_options.steps.sources]]
+name = "vim"
+url = "https://github.com/vim/vim/archive/refs/tags/v9.2.1167.tar.gz"
+sha256 = "bbcb6489aa995d128a8bf2a275fb5bc3f805ed36f52cb4d8347af425133cb3c4"
+
+[[installer_options.steps]]
+id = "build"
+title = "Configure, build and install into the payload"
+kind = "recipe"
+interpreter = "posix_sh"
+script = "recipes/build-posix.sh"
+needs = ["command:cc", "command:make"]
+
+[[installer_options.launchers]]
+id = "vim"
+name = "Vim"
+description = "Terminal Vim built from the pinned upstream sources"
+executable = "bin/vim"
+terminal = true
+default = true
+
+[[installer_options.public_commands]]
+name = "vim"
+launcher = "vim"
