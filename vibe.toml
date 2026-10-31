@@ -2,7 +2,7 @@
 name = "vim"
 group = "org.vibevm.apps"
 kind = "app"
-version = "1.1.0"
+version = "1.1.1"
 epoch = 1
 format = "normal"
 authors = ["Oleg Chirukhin"]
@@ -138,6 +138,10 @@ platform_name = "Linux"
 arch = "x86_64"
 arch_name = "Intel/AMD 64-bit"
 
+[[installer_options.features]]
+id = "starter-vimrc"
+name = "Starter vimrc written by an agent"
+
 [[installer_options.steps]]
 id = "sources"
 title = "Fetch the pinned Vim 9.2.1167 sources"
@@ -156,6 +160,13 @@ kind = "recipe"
 interpreter = "posix_sh"
 script = "recipes/build-posix.sh"
 needs = ["command:cc", "command:make"]
+
+[[installer_options.steps]]
+id = "starter-vimrc"
+title = "Let an agent write a commented starter vimrc beside the runtime"
+kind = "agent"
+when = { feature = "starter-vimrc" }
+prompt = "Write a short, well-commented starter vimrc for a newcomer to the file $out/share/vim/vimrc.starter (create the directory if it is missing). Sensible defaults only: line numbers, syntax highlighting, incremental search, 4-space indentation, a visible status line. No plugins, no network access, and write nothing else."
 
 [[installer_options.launchers]]
 id = "vim"
@@ -177,6 +188,10 @@ platform_name = "macOS"
 arch = "aarch64"
 arch_name = "Apple silicon"
 
+[[installer_options.features]]
+id = "starter-vimrc"
+name = "Starter vimrc written by an agent"
+
 [[installer_options.steps]]
 id = "sources"
 title = "Fetch the pinned Vim 9.2.1167 sources"
@@ -195,6 +210,13 @@ kind = "recipe"
 interpreter = "posix_sh"
 script = "recipes/build-posix.sh"
 needs = ["command:cc", "command:make"]
+
+[[installer_options.steps]]
+id = "starter-vimrc"
+title = "Let an agent write a commented starter vimrc beside the runtime"
+kind = "agent"
+when = { feature = "starter-vimrc" }
+prompt = "Write a short, well-commented starter vimrc for a newcomer to the file $out/share/vim/vimrc.starter (create the directory if it is missing). Sensible defaults only: line numbers, syntax highlighting, incremental search, 4-space indentation, a visible status line. No plugins, no network access, and write nothing else."
 
 [[installer_options.launchers]]
 id = "vim"
@@ -216,6 +238,10 @@ platform_name = "macOS"
 arch = "x86_64"
 arch_name = "Intel 64-bit"
 
+[[installer_options.features]]
+id = "starter-vimrc"
+name = "Starter vimrc written by an agent"
+
 [[installer_options.steps]]
 id = "sources"
 title = "Fetch the pinned Vim 9.2.1167 sources"
@@ -234,6 +260,13 @@ kind = "recipe"
 interpreter = "posix_sh"
 script = "recipes/build-posix.sh"
 needs = ["command:cc", "command:make"]
+
+[[installer_options.steps]]
+id = "starter-vimrc"
+title = "Let an agent write a commented starter vimrc beside the runtime"
+kind = "agent"
+when = { feature = "starter-vimrc" }
+prompt = "Write a short, well-commented starter vimrc for a newcomer to the file $out/share/vim/vimrc.starter (create the directory if it is missing). Sensible defaults only: line numbers, syntax highlighting, incremental search, 4-space indentation, a visible status line. No plugins, no network access, and write nothing else."
 
 [[installer_options.launchers]]
 id = "vim"
