@@ -2,7 +2,7 @@
 name = "vim"
 group = "org.vibevm.apps"
 kind = "app"
-version = "1.1.1"
+version = "1.1.2"
 epoch = 1
 format = "normal"
 authors = ["Oleg Chirukhin"]
@@ -16,6 +16,10 @@ requires_kinds = []
 
 [application]
 id = "vim"
+icon = "icons/vim.svg"
+menu_group = "Vim"
+categories = ["Utility", "Development"]
+keywords = ["vim", "vi", "text", "editor"]
 
 [[installer_options]]
 id = "ubuntu-apt"
@@ -42,7 +46,9 @@ id = "vim"
 name = "Vim"
 description = "Terminal Vim installed by Ubuntu apt"
 executable = "bin/vim.basic"
-terminal = true
+kind = "tui"
+menu = true
+icon = "icons/vim.svg"
 default = true
 
 [[installer_options.public_commands]]
@@ -72,7 +78,9 @@ id = "gvim"
 name = "gVim"
 description = "Graphical Vim for Windows"
 executable = "vim92/gvim.exe"
-icon = "vim92/vim.ico"
+kind = "gui"
+menu = true
+icon = { svg = "icons/vim.svg", ico = "$app_root/vim92/vim.ico" }
 default = true
 
 [[installer_options.launchers]]
@@ -80,7 +88,9 @@ id = "vim"
 name = "Vim Console"
 description = "Terminal Vim for Windows"
 executable = "vim92/vim.exe"
-terminal = true
+kind = "tui"
+menu = true
+icon = { svg = "icons/vim.svg", ico = "$app_root/vim92/vim.ico" }
 
 [[installer_options.public_commands]]
 name = "vim"
@@ -123,7 +133,9 @@ id = "vim"
 name = "Vim Console"
 description = "Terminal Vim built from the pinned upstream sources"
 executable = "vim92/vim.exe"
-terminal = true
+kind = "tui"
+menu = true
+icon = "icons/vim.svg"
 default = true
 
 [[installer_options.public_commands]]
@@ -173,7 +185,9 @@ id = "vim"
 name = "Vim"
 description = "Terminal Vim built from the pinned upstream sources"
 executable = "bin/vim"
-terminal = true
+kind = "tui"
+menu = true
+icon = "icons/vim.svg"
 default = true
 
 [[installer_options.public_commands]]
@@ -223,7 +237,9 @@ id = "vim"
 name = "Vim"
 description = "Terminal Vim built from the pinned upstream sources"
 executable = "bin/vim"
-terminal = true
+kind = "tui"
+menu = true
+icon = "icons/vim.svg"
 default = true
 
 [[installer_options.public_commands]]
@@ -273,7 +289,9 @@ id = "vim"
 name = "Vim"
 description = "Terminal Vim built from the pinned upstream sources"
 executable = "bin/vim"
-terminal = true
+kind = "tui"
+menu = true
+icon = "icons/vim.svg"
 default = true
 
 [[installer_options.public_commands]]
